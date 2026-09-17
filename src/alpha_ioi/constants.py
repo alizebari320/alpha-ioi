@@ -1,9 +1,9 @@
-"""Application-wide constants for Alpha IOI.
+"""Application-wide constants for Alpha.
 
 Every user-visible name and every technical name lives here so the rest of the
 codebase never hard-codes them. Identity rules:
 
-    user-visible name .. "Alpha IOI"   (never an emoji, never "MultiChat Linux")
+    user-visible name .. "Alpha"      (never an emoji, never "Alpha IOI")
     Python package ..... ``alpha_ioi``
     executable / repo .. ``alpha-ioi``
 """
@@ -36,7 +36,7 @@ __all__ = [
 
 #: User-visible application name. Used in the window title, header, README,
 #: docs and About dialog.
-APP_NAME = "Alpha IOI"
+APP_NAME = "Alpha"
 
 #: Importable Python package name.
 PACKAGE_NAME = "alpha_ioi"
