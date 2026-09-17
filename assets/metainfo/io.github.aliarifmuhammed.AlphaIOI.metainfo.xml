@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.aliarifmuhammed.AlphaIOI</id>
-  <name>Alpha IOI</name>
+  <id>io.github.aliarifmuhammed.Alpha</id>
+  <name>Alpha</name>
   <summary>Chat with many LLM providers from one native Linux window</summary>
   <description>
     <p>
-      Alpha IOI is a native GTK4 / libadwaita desktop chat client that talks to
+      Alpha is a native GTK4 / libadwaita desktop chat client that talks to
       several large-language-model providers from a single window. Provider
       credentials are kept in your system keyring, and every conversation is
       yours on disk.
@@ -18,9 +18,9 @@
       <li>An offline demo provider that needs no network and no API key</li>
     </ul>
   </description>
-  <launchable type="desktop-id">alpha-ioi.desktop</launchable>
-  <url type="homepage">https://github.com/aliarifmuhammed/alpha-ioi</url>
-  <url type="bugtracker">https://github.com/aliarifmuhammed/alpha-ioi/issues</url>
+  <launchable type="desktop-id">alpha.desktop</launchable>
+  <url type="homepage">https://github.com/aliarifmuhammed/alpha</url>
+  <url type="bugtracker">https://github.com/aliarifmuhammed/alpha/issues</url>
   <developer id="io.github.aliarifmuhammed">
     <name>Ali Arif Muhammed</name>
   </developer>
@@ -30,7 +30,7 @@
   <releases>
     <release version="0.1.0" date="2026-01-01">
       <description>
-        <p>Initial Alpha IOI MVP: multi-provider chat, keyring-backed keys, offline demo mode.</p>
+        <p>Initial Alpha MVP: multi-provider chat, keyring-backed keys, offline demo mode.</p>
       </description>
     </release>
   </releases>
