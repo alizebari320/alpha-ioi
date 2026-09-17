@@ -1,11 +1,11 @@
-"""Application-wide constants for Alpha IOI.
+"""Application-wide constants for Alpha.
 
 Every user-visible name and every technical name lives here so the rest of the
 codebase never hard-codes them. Identity rules:
 
-    user-visible name .. "Alpha IOI"   (never an emoji, never "MultiChat Linux")
+    user-visible name .. "Alpha"
     Python package ..... ``alpha_ioi``
-    executable / repo .. ``alpha-ioi``
+    executable / repo .. ``alpha``
 """
 
 from __future__ import annotations
@@ -36,27 +36,27 @@ __all__ = [
 
 #: User-visible application name. Used in the window title, header, README,
 #: docs and About dialog.
-APP_NAME = "Alpha IOI"
+APP_NAME = "Alpha"
 
 #: Importable Python package name.
 PACKAGE_NAME = "alpha_ioi"
 
 #: Console script / repository / distribution name (kebab-case).
-CLI_NAME = "alpha-ioi"
+CLI_NAME = "alpha"
 
 #: GApplication / Wayland app id. Drives the app id shown by the compositor.
-APP_ID = "io.github.aliarifmuhammed.AlphaIOI"
+APP_ID = "io.github.aliarifmuhammed.Alpha"
 
 #: Icon name registered against the icon theme. Matches the filename of
-#: ``assets/icons/alpha-ioi.svg``.
-ICON_NAME = "alpha-ioi"
+#: ``assets/icons/alpha.svg``.
+ICON_NAME = "alpha"
 
 APP_AUTHOR = "Ali Arif Muhammed"
 DEVELOPER_EMAIL = "aliarifmuhammed@users.noreply.github.com"
 APP_DESCRIPTION = (
     "A native Linux desktop chat client that talks to many LLM providers from one window."
 )
-WEBSITE_URL = "https://github.com/aliarifmuhammed/alpha-ioi"
+WEBSITE_URL = "https://github.com/aliarifmuhammed/alpha"
 ISSUES_URL = f"{WEBSITE_URL}/issues"
 HELP_URL = f"{WEBSITE_URL}#configuration"
 
@@ -73,7 +73,7 @@ def _resolve_version() -> str:
         return _VERSION_FALLBACK
 
 
-VERSION = os.environ.get("ALPHA_IOI_VERSION") or _resolve_version()
+VERSION = os.environ.get("ALPHA_VERSION") or _resolve_version()
 
 # --- Paths --------------------------------------------------------------------
 
