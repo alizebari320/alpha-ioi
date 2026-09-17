@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=Alpha IOI
+Name=Alpha
 GenericName=Multi-provider chat client
 Comment=Chat with many LLM providers from one native Linux window
-Exec=alpha-ioi
+Exec=alpha
 Icon=alpha-ioi
 Terminal=false
 Categories=Network;Chat;Utility;
