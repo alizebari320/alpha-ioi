@@ -4,8 +4,8 @@ Every user-visible name and every technical name lives here so the rest of the
 codebase never hard-codes them. Identity rules:
 
     user-visible name .. "Alpha"      (never an emoji, never "Alpha IOI")
-    Python package ..... ``alpha_ioi``
-    executable / repo .. ``alpha-ioi``
+    Python package ..... ``alpha_ioi`` (internal import path, unchanged)
+    executable / repo .. ``alpha``
 """
 
 from __future__ import annotations
@@ -38,17 +38,21 @@ __all__ = [
 #: docs and About dialog.
 APP_NAME = "Alpha"
 
-#: Importable Python package name.
+#: Importable Python package name (internal; kept stable so imports and the
+#: wheel layout do not churn).
 PACKAGE_NAME = "alpha_ioi"
 
-#: Console script / repository / distribution name (kebab-case).
-CLI_NAME = "alpha-ioi"
+#: Console script / distribution name (kebab-case). Also drives the user
+#: config and state directories: ``~/.config/alpha`` / ``~/.local/state/alpha``.
+CLI_NAME = "alpha"
 
 #: GApplication / Wayland app id. Drives the app id shown by the compositor.
+#: Kept stable: changing it would orphan the desktop entry and window icon.
 APP_ID = "io.github.aliarifmuhammed.AlphaIOI"
 
 #: Icon name registered against the icon theme. Matches the filename of
-#: ``assets/icons/alpha-ioi.svg``.
+#: ``assets/icons/alpha-ioi.svg`` (the SVG file keeps its name; only the
+#: user-visible app name changed).
 ICON_NAME = "alpha-ioi"
 
 APP_AUTHOR = "Ali Arif Muhammed"
