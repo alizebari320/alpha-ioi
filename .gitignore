@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtualenvs
+.venv/
+venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local Alpha IOI state - never commit config or keys
+/config/config.toml
+*.toml.bak
+keys.json
+*.jsonl
+*.meta.json
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store

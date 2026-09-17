@@ -1,0 +1,92 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alpha-ioi"
+version = "0.1.0"
+description = "A native Linux desktop chat client that talks to many LLM providers from one window."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [{ name = "Ali Arif Muhammed" }]
+keywords = ["llm", "chat", "gtk4", "libadwaita", "linux", "openai", "ollama", "anthropic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: GTK",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Chat",
+]
+dependencies = [
+    "httpx>=0.27",
+    "keyring>=25.2",
+    "tomli-w>=1.0",
+]
+
+[project.scripts]
+alpha-ioi = "alpha_ioi.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/aliarifmuhammed/alpha-ioi"
+Issues = "https://github.com/aliarifmuhammed/alpha-ioi/issues"
+
+# PyGObject is deliberately NOT a pip dependency: it is a system library
+# (python3-gobject / gir1.2-gtk-4.0 / gir1.2-adw-1). See scripts/install-fedora.sh.
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/alpha_ioi"]
+
+# Ship the canonical icon inside the wheel so an installed copy can find it
+# without the git checkout (see alpha_ioi/ui/icons.py).
+[tool.hatch.build.targets.wheel.force-include]
+"assets/icons/alpha-ioi.svg" = "alpha_ioi/data/icons/alpha-ioi.svg"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/alpha_ioi",
+    "assets",
+    "config",
+    "scripts",
+    "tests",
+    "README.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF", "S", "BLE", "PLW"]
+ignore = [
+    "E501",    # line length is the formatter's job
+    "BLE001",  # the UI must survive a provider throwing anything
+    "S101",    # asserts document invariants in this codebase
+    "PLW0603", # module-level cached icon lookup
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S603", "S607"]
+"src/alpha_ioi/ui/*" = ["S110"]  # icon/style loading is best-effort
+# The keyring is best-effort by design: any backend failure falls back to the
+# file store, so swallowing the error here is the intended behaviour.
+"src/alpha_ioi/config/secrets.py" = ["S110"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,64 @@
+# Alpha IOI example configuration
+#
+# Copy this file to:
+#
+#     ~/.config/alpha-ioi/config.toml
+#
+# ...or run `alpha-ioi` and use the menu -> "Edit config file".
+#
+# API keys are NOT written here. Paste one into a provider block once and
+# Alpha IOI moves it to your system keyring (or to
+# ~/.config/alpha-ioi/keys.json with mode 0600 when no keyring exists).
+
+# Which provider is selected at startup (must match a [providers.<name>] block).
+active_provider = "demo"
+
+# Enter sends the message; Shift+Enter inserts a newline. Set to false if you
+# would rather have Enter insert newlines and use the Send button.
+send_on_enter = true
+
+# Initial window size.
+window_width = 1100
+window_height = 720
+
+
+# ---------------------------------------------------------------------------
+# Providers. `kind` selects the protocol:
+#   openai    - OpenAI-compatible /chat/completions (OpenAI, OpenRouter,
+#               AgentRouter, TokenHarbor, LocalAI, vLLM, Ollama's /v1 ...)
+#   anthropic - Anthropic Messages API
+#   ollama    - local Ollama server (no API key)
+#   mock      - offline demo, no network, no key
+# ---------------------------------------------------------------------------
+
+# Offline demo. Works with no setup at all; safe to delete once you have a
+# real provider.
+[providers.demo]
+kind = "mock"
+title = "Demo (offline)"
+
+# A local Ollama server. No API key required.
+[providers.ollama]
+kind = "ollama"
+base_url = "http://localhost:11434"
+model = "qwen3:4b"
+
+# OpenAI itself. Get a key at https://platform.openai.com/api-keys
+[providers.openai]
+kind = "openai"
+base_url = "https://api.openai.com/v1"
+model = "gpt-5"
+# api_key = "sk-..."        # optional: moved to the keyring on first load
+
+# OpenRouter is OpenAI-compatible: point base_url at it.
+[providers.openrouter]
+kind = "openai"
+base_url = "https://openrouter.ai/api/v1"
+model = "anthropic/claude-sonnet-4"
+
+# Anthropic native API.
+[providers.anthropic]
+kind = "anthropic"
+base_url = "https://api.anthropic.com"
+model = "claude-sonnet-4-5"
+# api_key = "sk-ant-..."

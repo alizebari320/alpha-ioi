@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # PyGObject is a system library, not a pip wheel: install the GTK4 +
+      # libadwaita typelibs from apt. xvfb gives the GTK smoke tests a display.
+      - name: Install system GTK stack
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 \
+            libgtk-4-1 libadwaita-1-0 \
+            gdk-pixbuf2.0-common xvfb
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # --system-site-packages is what makes `import gi` resolve to the apt
+      # build inside the uv-managed virtualenv.
+      - name: Create virtualenv
+        run: uv venv --python ${{ matrix.python-version }} --system-site-packages
+
+      - name: Install project
+        run: uv pip install -e ".[dev]"
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Test
+        run: xvfb-run -a uv run pytest -v

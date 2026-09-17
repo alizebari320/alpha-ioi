@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Alpha IOI
+GenericName=Multi-provider chat client
+Comment=Chat with many LLM providers from one native Linux window
+Exec=alpha-ioi
+Icon=alpha-ioi
+Terminal=false
+Categories=Network;Chat;Utility;
+Keywords=AI;LLM;Chat;OpenAI;Ollama;Anthropic;Assistant;
+StartupNotify=true
+StartupWMClass=io.github.aliarifmuhammed.AlphaIOI
