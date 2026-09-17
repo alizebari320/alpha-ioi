@@ -27,3 +27,6 @@ keys.json
 .vscode/
 *.swp
 .DS_Store
+
+# Local, machine-specific install notes
+INSTALLATION.md
