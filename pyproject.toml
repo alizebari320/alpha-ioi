@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "alpha-ioi"
+name = "alpha"
 version = "0.1.0"
 description = "A native Linux desktop chat client that talks to many LLM providers from one window."
 readme = "README.md"
@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.scripts]
-alpha-ioi = "alpha_ioi.__main__:main"
+alpha = "alpha_ioi.__main__:main"
 
 [project.optional-dependencies]
 dev = [
