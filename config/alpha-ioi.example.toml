@@ -1,14 +1,14 @@
-# Alpha IOI example configuration
+# Alpha example configuration
 #
 # Copy this file to:
 #
-#     ~/.config/alpha-ioi/config.toml
+#     ~/.config/alpha/config.toml
 #
-# ...or run `alpha-ioi` and use the menu -> "Edit config file".
+# ...or run `alpha` and use the menu -> "Edit config file".
 #
 # API keys are NOT written here. Paste one into a provider block once and
-# Alpha IOI moves it to your system keyring (or to
-# ~/.config/alpha-ioi/keys.json with mode 0600 when no keyring exists).
+# Alpha moves it to your system keyring (or to
+# ~/.config/alpha/keys.json with mode 0600 when no keyring exists).
 
 # Which provider is selected at startup (must match a [providers.<name>] block).
 active_provider = "demo"
