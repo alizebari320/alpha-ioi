@@ -50,20 +50,25 @@ def build_provider(
         api_key = secrets.get(config.name) or ""
 
     if cls is MockProvider:
-        return cls(
+        provider = cls(
             name=config.name,
             model=config.model or _MOCK_DEFAULT_MODEL,
             system_prompt=config.system_prompt,
         )
-
-    return cls(
-        name=config.name,
-        model=config.model,
-        system_prompt=config.system_prompt,
-        api_key=api_key,
-        base_url=config.base_url,
-        transport=transport,
-    )
+    else:
+        provider = cls(
+            name=config.name,
+            model=config.model,
+            system_prompt=config.system_prompt,
+            api_key=api_key,
+            base_url=config.base_url,
+            transport=transport,
+        )
+    # A configured title (e.g. "Atria") reads better than the generic class
+    # label; describe() and the sidebar both use it.
+    if config.title:
+        provider.label = config.title
+    return provider
 
 
 _MOCK_DEFAULT_MODEL = "alpha-ioi-demo-1"

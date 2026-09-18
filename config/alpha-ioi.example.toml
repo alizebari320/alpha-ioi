@@ -37,6 +37,15 @@ window_height = 720
 kind = "mock"
 title = "Demo (offline)"
 
+# Atria (https://atria-asi.ai) - OpenAI-compatible. Any OpenAI-style endpoint
+# works the same way: set base_url, model and an api_key.
+[providers.atria]
+kind = "openai"
+title = "Atria"
+base_url = "https://api.atria-asi.ai/v1"
+model = "Atria-Dawn-Preview"
+# api_key = "atr_..."   # moved to your keyring on first load
+
 # A local Ollama server. No API key required.
 [providers.ollama]
 kind = "ollama"

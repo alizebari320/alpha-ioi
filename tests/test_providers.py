@@ -248,6 +248,31 @@ def test_build_provider_rejects_unknown_kind(secret_store):
         build_provider(ProviderConfig(name="x", kind="wat"), secret_store)
 
 
+def test_build_provider_title_becomes_the_label(secret_store):
+    """A configured title (e.g. "Atria") overrides the generic class label."""
+    provider = build_provider(
+        ProviderConfig(
+            name="atria",
+            kind="openai",
+            title="Atria",
+            base_url="https://api.atria-asi.ai/v1",
+            model="Atria-Dawn-Preview",
+        ),
+        secret_store,
+    )
+    assert provider.label == "Atria"
+    assert provider.describe() == "Atria · Atria-Dawn-Preview"
+
+
+def test_build_provider_without_title_keeps_class_label(secret_store):
+    provider = build_provider(
+        ProviderConfig(name="openai", kind="openai", base_url="https://x/v1", model="gpt-5"),
+        secret_store,
+    )
+    assert provider.label == OpenAICompatibleProvider.label
+    assert provider.describe() == f"{OpenAICompatibleProvider.label} · gpt-5"
+
+
 def test_provider_describe():
     provider = OpenAICompatibleProvider(name="openai", model="gpt-5")
     assert provider.describe() == "OpenAI-compatible · gpt-5"

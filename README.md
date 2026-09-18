@@ -115,7 +115,7 @@ model = "gpt-5"
 
 | `kind` | Protocol | Notes |
 |--------|----------|-------|
-| `openai` | `/v1/chat/completions` (SSE) | OpenAI, OpenRouter, AgentRouter, TokenHarbor, LocalAI, vLLM, Ollama `/v1` |
+| `openai` | `/v1/chat/completions` (SSE) | OpenAI, OpenRouter, AgentRouter, TokenHarbor, **Atria**, LocalAI, vLLM, Ollama `/v1` |
 | `anthropic` | `/v1/messages` (SSE) | Anthropic-native |
 | `ollama` | `/api/chat` (NDJSON) | local, no API key |
 | `mock` | — | offline demo, no network |

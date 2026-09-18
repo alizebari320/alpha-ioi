@@ -33,6 +33,9 @@ class Sidebar:
         self._on_model_changed: Callable[[str], None] | None = None
         self._on_refresh_models: Callable[[], list[str]] | None = None
 
+        # Maps the provider ComboRow's display labels back to config keys.
+        self._provider_names: list[str] = []
+
         self._box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         # Brand row (the temporary A7 icon + app name)
@@ -126,9 +129,9 @@ class Sidebar:
 
     def _emit_provider_changed(self, row, _pspec) -> None:
         if self._on_provider_changed:
-            item = row.get_selected_item()
-            if item is not None:
-                self._on_provider_changed(item.get_string())
+            index = row.get_selected()
+            if 0 <= index < len(self._provider_names):
+                self._on_provider_changed(self._provider_names[index])
 
     def _emit_model_changed(self, row, _pspec) -> None:
         if self._on_model_changed:
@@ -138,10 +141,15 @@ class Sidebar:
 
     # -- content ---------------------------------------------------------------
 
-    def set_providers(self, names: list[str], active: str = "") -> None:
+    def set_providers(
+        self, names: list[str], active: str = "", titles: dict[str, str] | None = None
+    ) -> None:
         from gi.repository import Gtk
 
-        self._provider_row.set_model(Gtk.StringList.new(names))
+        titles = titles or {}
+        self._provider_names = list(names)
+        display = [titles.get(name) or name for name in names]
+        self._provider_row.set_model(Gtk.StringList.new(display))
         if active in names:
             self._provider_row.set_selected(names.index(active))
 

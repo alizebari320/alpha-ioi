@@ -162,7 +162,8 @@ class MainWindow:
     def refresh_all(self) -> None:
         """Rebuild sidebar state and (re)apply the active provider."""
         cfg = self._config.config
-        self._sidebar.set_providers(cfg.provider_names(), cfg.active_provider)
+        titles = {name: provider.title for name, provider in cfg.providers.items()}
+        self._sidebar.set_providers(cfg.provider_names(), cfg.active_provider, titles)
         self._sidebar.set_conversations([c.title for c in self._history.list_conversations()])
         self._apply_provider()
         self._render_conversation()
