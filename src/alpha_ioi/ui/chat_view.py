@@ -113,7 +113,7 @@ class ChatView:
             wrap_mode=Gtk.WrapMode.WORD_CHAR,
             xalign=0.0,
             selectable=True,
-            hexpand=True,
+            max_width_chars=72,
         )
         row.append(label)
 

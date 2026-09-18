@@ -216,9 +216,13 @@ class MainWindow:
     def _apply_provider(self) -> None:
         cfg = self._config.provider()
         self._provider = build_provider(cfg, self._config.secrets)
+        # build_provider() may substitute a provider-side default when the config
+        # names no model (the demo provider does), so read it back from the
+        # provider instead of trusting the raw config value.
+        model = self._provider.resolve_model()
         self._conversation.provider = cfg.name
-        self._conversation.model = cfg.model
-        self._sidebar.set_models([cfg.model] if cfg.model else [])
+        self._conversation.model = model
+        self._sidebar.set_models([model] if model else [])
         self._update_subtitle()
 
     def _update_subtitle(self) -> None:

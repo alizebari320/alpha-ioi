@@ -29,6 +29,7 @@ from alpha_ioi.constants import (
 if TYPE_CHECKING:
     from alpha_ioi.config import ConfigManager
     from alpha_ioi.core.history import HistoryStore
+    from alpha_ioi.ui.window import MainWindow
 
 __all__ = ["AlphaIOIApplication", "main"]
 
@@ -49,21 +50,20 @@ class AlphaIOIApplication:
         gi.require_version("Adw", "1")
         from gi.repository import Adw, Gio
 
-        from alpha_ioi.ui.icons import app_icon_texture
-        from alpha_ioi.ui.window import MainWindow
-
         self._config = config
         self._history = history
         self._force_demo = force_demo
-        self._logo = app_icon_texture(256)
 
         self._app = Adw.Application(application_id=APP_ID, flags=Gio.ApplicationFlags.FLAGS_NONE)
 
-        self._window = MainWindow(self._app, config, history)
+        # The window is built lazily in _ensure_window(): GTK refuses to
+        # register an application window before GApplication::startup, and an
+        # unregistered window does not keep the application alive.
+        self._window: MainWindow | None = None
 
         actions = {
             "quit": (lambda _a, _p: self.quit(), ("<Control>q",)),
-            "new-chat": (lambda _a, _p: self._window.new_chat(), ("<Control>n",)),
+            "new-chat": (lambda _a, _p: self._ensure_window().new_chat(), ("<Control>n",)),
             "edit-config": (lambda _a, _p: self.edit_config(), None),
             "about": (lambda _a, _p: self.show_about(), None),
         }
@@ -78,12 +78,26 @@ class AlphaIOIApplication:
 
     # -- application -----------------------------------------------------------
 
+    def _ensure_window(self) -> MainWindow:
+        """Build the main window on first use, after ``GApplication::startup``.
+
+        A ``Gtk.ApplicationWindow`` created too early is never registered with
+        the application, and an application with no registered windows exits as
+        soon as the main loop starts - which looks like "the app won't launch".
+        """
+        if self._window is None:
+            from alpha_ioi.ui.window import MainWindow
+
+            self._window = MainWindow(self._app, self._config, self._history)
+        return self._window
+
     def _on_activate(self, _app) -> None:
         self.load_stylesheet()
         if self._force_demo:
             self._config.config.active_provider = "mock"
-        self._window.refresh_all()
-        self._window.present()
+        window = self._ensure_window()
+        window.refresh_all()
+        window.present()
 
     def load_stylesheet(self) -> None:
         from importlib import resources
@@ -113,13 +127,15 @@ class AlphaIOIApplication:
         try:
             subprocess.Popen([editor, str(CONFIG_FILE)])  # noqa: S603
         except FileNotFoundError:
-            self._window.show_error(f"editor {editor!r} not found; edit {CONFIG_FILE}")
+            self._ensure_window().show_error(f"editor {editor!r} not found; edit {CONFIG_FILE}")
 
     def show_about(self) -> None:
         from gi.repository import Adw
 
+        from alpha_ioi.ui.icons import app_icon_texture
+
         about = Adw.AboutWindow(
-            transient_for=self._window.widget,
+            transient_for=self._ensure_window().widget,
             application_name=APP_NAME,
             application_icon="alpha-ioi",
             version=VERSION,
@@ -132,8 +148,9 @@ class AlphaIOIApplication:
             comments=APP_DESCRIPTION,
         )
         about.set_license_type(_license_type())
-        if self._logo is not None:
-            about.set_logo(self._logo)
+        logo = app_icon_texture(256)
+        if logo is not None:
+            about.set_logo(logo)
         about.present()
 
     # -- run -------------------------------------------------------------------
@@ -174,7 +191,9 @@ def main(argv: list[str] | None = None) -> int:
     history = HistoryStore()
 
     application = AlphaIOIApplication(config, history, force_demo=args.demo)
-    return application.run(sys.argv[1:] if argv is None else [])
+    # ``Adw.Application.run`` wants a full argv whose first element is the
+    # program name; passing our own flags would make GTK try to parse them.
+    return application.run([sys.argv[0]])
 
 
 if __name__ == "__main__":  # pragma: no cover
